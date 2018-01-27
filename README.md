@@ -8,6 +8,11 @@ Note this package requires python 3
 ## Running
 `python server.py`
 
+## Accessing Dashboard
+1. Enable CORS from browser (in Chrome get the Allow-Control-Allow-Origin extension) (or for the API developer please allow CORS :D)
+2. visit `http://uoft-a-oec-2018.herokuapp.com/dashboard`
+
+
 ## Components
 ### Heroku deployed python server that does
 1. automated trading

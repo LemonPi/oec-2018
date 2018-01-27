@@ -1,5 +1,9 @@
 ## Install
 `pip install flask`
+`pip install pandas`
+
+Alternatively use `python -m pip` instead of just `pip`.
+Note this package requires python 3
 
 ## Running
 `python server.py`

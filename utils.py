@@ -78,11 +78,7 @@ def get_account():
     acc.cash = r['cash']
 
     for holding in r['holdings']:
-        h = Holding()
-        h.ticker = holding['ticker']
-        h.shares = holding['shares']
-        h.book_cost = holding['book_cost']
-        h.market_value = holding['market_value']
+        h = Holding(holding['ticker'], holding['shares'], holding['book_cost'], holding['market_value'])
         acc.holdings.append(h)
 
     return acc

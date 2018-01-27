@@ -10,27 +10,54 @@ import pickle
 
 KEY = '0MJ5v-KSNMbINd3EB5H_Ew'
 HOST = 'http://oec-2018.herokuapp.com/api'
+STOCK = 'stock'
+ACCOUNT = 'account'
+
+class RequestError(Exception):
+    def __init__(self, message):
+        super(RequestError, self).__init__(message)
+
+
+def reject_bad_requests(r):
+    """Raise an exception on any response with errors"""
+    if not r['success']:
+        raise RequestError('/n'.join(r['errors']))
+
+
+def join_urls(pieces):
+    return '/'.join(s.strip('/') for s in pieces)
 
 
 def list_tickers():
     """List all stock tickers
     -> [string]"""
-    return []
+    r = requests.get(join_urls([HOST, STOCK, 'list']), params={'key': KEY}).json()
+    reject_bad_requests(r)
+
+    return r['stock_tickers']
 
 
 def get_prices(ticker):
     """Get historical prices (including current) of given stock in cents
     Last element in list is current price
     string -> [number]"""
-    return 0
+    r = requests.get(join_urls([HOST, STOCK]), params={'key': KEY, 'ticker': ticker}).json()
+    reject_bad_requests(r)
+
+    return r['historical_price']
 
 
 def buy_stock(ticker, num_shares):
     """Buy num_shares of given stock"""
+    r = requests.get(join_urls([HOST, 'buy']), params={'key': KEY, 'ticker': ticker, 'shares': num_shares}).json()
+    reject_bad_requests(r)
 
 
 def sell_stock(ticker, num_shares):
     """Sell num_shares of given stock"""
+    r = requests.get(join_urls([HOST, 'sell']), params={'key': KEY, 'ticker': ticker, 'shares': num_shares}).json()
+    reject_bad_requests(r)
+
 
 def get_account():
     """Get account information
@@ -41,7 +68,7 @@ def get_account():
 def get_batch_prices(update):
     """Get all historical prices for all current stocks"""
 
-    d= {}
+    d = {}
 
     if os.path.isfile('batchprices.pickle') and not update:
         with open('batchprices.pickle', 'rb') as handle:
@@ -66,6 +93,7 @@ def get_batch_prices(update):
         plt.ylabel(p)
         if i == 2:
             print(p)
+        plt.subplot(6, 5, i)
         i += 1
 
     print(i)

@@ -1,6 +1,6 @@
 from collections import namedtuple
 
-Stock = namedtuple("Stock", "ticker shares book_cost market_value")
+Holding = namedtuple("Holding", "ticker shares book_cost market_value")
 
 
 class Account:

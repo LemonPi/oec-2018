@@ -123,5 +123,6 @@ def get_batch_prices(update):
     plt.show()
         
 if __name__ == "__main__":
+    # Change this arg to True to update batchprices.pickle
     get_batch_prices(False)
 

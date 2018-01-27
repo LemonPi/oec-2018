@@ -39,7 +39,10 @@ def get_prices(ticker):
     """Get historical prices (including current) of given stock in cents
     Last element in list is current price
     string -> [number]"""
-    return 0
+    r = requests.get(join_urls([HOST, STOCK]), params={'key': KEY, 'ticker' : ticker}).json()
+    reject_bad_requests(r)
+
+    return r['historical_price']
 
 
 def buy_stock(ticker, num_shares):

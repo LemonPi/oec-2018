@@ -1,3 +1,10 @@
 pre{
     white-space: pre-wrap;
 }
+
+button{
+    padding: 0 10px;
+    height: 20px;
+    line-height: 20px;
+    margin: 2px;
+}

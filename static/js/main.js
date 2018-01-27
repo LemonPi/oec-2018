@@ -13,18 +13,18 @@ $( document ).ready( function() {
             }
         });    
         // Get prices for each ticker and load in chart
-        data["stock_tickers"].forEach(ticker => {
-            $.getJSON(host+"/stock", {ticker: ticker, key:key}).done(function(data) {
-                historical_price = [ticker].concat(data["historical_price"]);
-                chart.load({
-                    columns:[historical_price]
+        data["stock_tickers"].sort().forEach(ticker => {
+            $("#buttons").append(`<button id="${ticker}">${ticker}</button>`);
+            $(`#${ticker}`).click(function () {
+                $.getJSON(host+"/stock", {ticker: ticker, key:key}).done(function(data) {
+                    historical_price = [ticker].concat(data["historical_price"]);
+                    chart.load({
+                        columns:[historical_price]
+                    });
                 });
-                chart.hide([ticker]);
             });
         });
-
     });
-
     // Get current account status
     $.getJSON(host+"/account", {key:key}).done(function(data) {
         console.log(data);

@@ -1,4 +1,4 @@
-
+from data_structures import Account
 class Simulator:
 """
 The simulator allows for the testing of trading algorithms
@@ -14,8 +14,7 @@ by assessing the algorithm's performance across historical data.
 
         prices = {}
         mx = 0
-        balance = 100000
-        holdings = {}
+        account = Account()
 
         for tick, price_list in d.items():
             if len(price_list) > mx:
@@ -35,6 +34,7 @@ by assessing the algorithm's performance across historical data.
                 wym.append(prices[i]["WYM"])
 
         for i in range(1, mx):
-            pass
             #put day-by-day sim here
             # use holdings and balance vars
+
+if __name__ == "__main__":

@@ -9,7 +9,8 @@ class TradingAlgo:
     def step(self, account, stocks):
         raise NotImplementedError
 
-    def add_action(self, actions, type, ticker, num_stocks):
+    @staticmethod
+    def add_action(actions, type, ticker, num_stocks):
         actions.append({
             'type': type,
             'ticker': ticker,
@@ -51,15 +52,15 @@ class DerivativeTradingAlgo(TradingAlgo):
                     sell_stocks.append(stock)
 
         actions = []
-        for stock in sell_stocks:
-            ticker = stock['ticker']
-            self.add_action(actions, 'sell', ticker, own_stocks[ticker].num_stocks)
+        for ticker in own_stocks:
+            if ticker in sell_stocks:
+                TradingAlgo.add_action(actions, 'sell', ticker, own_stocks[ticker].num_stocks)
 
         # to guard against risk, allow only half of our money to be spent per time step
         # for now distribute evenly amongst stocks
         cash_per_stock = account.cash / (2 * len(buy_stocks))
         for stock in buy_stocks:
             num_stocks = math.floor(stock['historical_price'][-1] / cash_per_stock)
-            self.add_action(actions, 'buy', ticker, num_stocks)
+            TradingAlgo.add_action(actions, 'buy', ticker, num_stocks)
 
         return actions

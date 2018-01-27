@@ -47,7 +47,7 @@ def filter_smooth(smooth_threshold):
 	mng.resize(*mng.window.maxsize())
 	plt.show()
 
-def buy_or_sell():
+def simulate():
 
 	d = {}
 	with open('batchprices.pickle', 'rb') as handle:
@@ -58,15 +58,15 @@ def buy_or_sell():
 	balance = 100000
 	holdings = {}
 
-	for tick, p_list in d.items():
-		if len(p_list) > mx:
-			mx = len(p_list)
+	for tick, price_list in d.items():
+		if len(price_list) > mx:
+			mx = len(price_list)
 
 	for i in range(mx, 0, -1):
 		prices[i] = {}
 
-		for tick, p_list in d.items():
-			if len(p_list) > mx - i:
+		for tick, price_list in d.items():
+			if len(price_list) > mx - i:
 				prices[i][tick] = p_list[-(mx-i)-1]
 
 	print(prices)

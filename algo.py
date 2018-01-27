@@ -1,6 +1,7 @@
 from calculus import window_stats
 import math
-
+from data_structures import Action
+from api import COST_PER_ACTION
 
 class TradingAlgo:
     def __init__(self):
@@ -47,20 +48,29 @@ class DerivativeTradingAlgo(TradingAlgo):
 
             if math.fabs(d) < self.d_threshold:
                 if dd > self.dd_threshold:
+                    # print(stock, dd, self.dd_threshold)
                     buy_stocks.append(stock)
-                elif ticker in own_stocks and dd < -self.dd_threshold:
-                    sell_stocks.append(stock)
+                elif ticker in own_stocks:
+                    print(dd)
+                    if dd < -self.dd_threshold:
+                        sell_stocks.append(stock)
 
         actions = []
-        for ticker in own_stocks:
-            if ticker in sell_stocks:
-                TradingAlgo.add_action(actions, 'sell', ticker, own_stocks[ticker].num_stocks)
+        print("own stock")
+        print(own_stocks)
+        print("sell stock")
+        print(sell_stocks)
+        for stock in sell_stocks:
+            ticker = stock['ticker']
+            actions.append(Action('sell', ticker, own_stocks[ticker].shares))
 
         # to guard against risk, allow only half of our money to be spent per time step
         # for now distribute evenly amongst stocks
-        cash_per_stock = account.cash / (2 * len(buy_stocks))
-        for stock in buy_stocks:
-            num_stocks = math.floor(stock['historical_price'][-1] / cash_per_stock)
-            TradingAlgo.add_action(actions, 'buy', ticker, num_stocks)
+        if buy_stocks:
+            cash_per_stock = (account.cash - COST_PER_ACTION) / (2 * len(buy_stocks))
+            for stock in buy_stocks:
+                num_stocks = math.floor(cash_per_stock / stock['historical_price'][-1])
+                if num_stocks > 0:
+                    actions.append(Action('buy', stock['ticker'], num_stocks))
 
         return actions

@@ -1,8 +1,11 @@
 
 class Simulator:
-    
-    def __init__(self, trade_func):
-        self.trade_func = trade_func
+"""
+The simulator allows for the testing of trading algorithms
+by assessing the algorithm's performance across historical data.
+"""
+    def __init__(self, trading_algo):
+        self.trading_algo = trading_algo
 
     def simulate():
         d = {}

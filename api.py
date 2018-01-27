@@ -106,12 +106,11 @@ def get_batch_prices(update):
 
     i = 1
     for p in d:
-        plt.subplot(6,5,i)
+        plt.subplot(20,10,i)
         plt.plot(d[p])
         plt.ylabel(p)
         if i == 2:
             print(p)
-        plt.subplot(6, 5, i)
         i += 1
 
     print(i)

@@ -8,6 +8,7 @@ import requests
 import matplotlib.pyplot as plt
 import pickle
 
+COST_PER_ACTION = 10 * 100
 KEY = '0MJ5v-KSNMbINd3EB5H_Ew'
 HOST = 'http://oec-2018.herokuapp.com/api'
 STOCK = 'stock'

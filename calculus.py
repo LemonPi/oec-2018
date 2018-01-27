@@ -45,9 +45,11 @@ def filter_out_smooth_stocks(smooth_threshold):
         s = pd.Series(d[tick])
         if s.autocorr(lag=1) > 0.01:
             print(tick, math.log(s.autocorr(lag=1)) * 100)
-        if math.log(s.autocorr(lag=1)) < -0.01:
-            ok.append(tick)
-    i = 1
+			if math.log(s.autocorr(lag=1)) < -1:
+				ok.append(tick)
+    return ok
+'''
+	i = 1
     for p in d:
         plt.subplot(20, 10, i)
         plt.plot(d[p])
@@ -58,12 +60,12 @@ def filter_out_smooth_stocks(smooth_threshold):
 
     print(i)
     print(len(d))
-    plt.subplots_adjust(left=0.07, bottom=0.04, right=0.98, top=0.96,
-                        wspace=0.4, hspace=0.4)
-    mng = plt.get_current_fig_manager()
-    mng.resize(*mng.window.maxsize())
-    plt.show()
-
+    #plt.subplots_adjust(left=0.07, bottom=0.04, right=0.98, top=0.96,
+    #                   wspace=0.4, hspace=0.4)
+    #mng = plt.get_current_fig_manager()
+    #mng.resize(*mng.window.maxsize())
+    #plt.show()
+'''
 if __name__ == "__main__":
     # buy_or_sell(0.98)
     print(window_stats(api.get_prices('OPZ'), 3))

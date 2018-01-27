@@ -123,5 +123,5 @@ def get_batch_prices(update):
         
 if __name__ == "__main__":
     # Change this arg to True to update batchprices.pickle
-    get_batch_prices(False)
+    get_batch_prices(True)
 

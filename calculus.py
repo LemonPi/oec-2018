@@ -14,7 +14,7 @@ class dfdt:
 		# assumes index > 1
 		return (prices[index] - 2*prices[index-1] + prices[index-2])/(dx**2)
 
-def buy_or_sell(smooth_threshold):
+def filter_smooth(smooth_threshold):
 
 	d = {}
 	with open('batchprices.pickle', 'rb') as handle:
@@ -24,17 +24,17 @@ def buy_or_sell(smooth_threshold):
 
 	for tick in d:
 		s = pd.Series(d[tick])
-		print(tick, math.log(s.autocorr(lag=1))*100)
+		if s.autocorr(lag=1) > 0.01:
+			print(tick, math.log(s.autocorr(lag=1))*100)
 		if math.log(s.autocorr(lag=1)) < -0.01:
 			ok.append(tick)
 	i = 1
 	for p in d:
-		plt.subplot(6,5,i)
+		plt.subplot(20,10,i)
 		plt.plot(d[p])
 		plt.ylabel(p)
 		if i == 2:
 			print(p)
-		plt.subplot(6, 5, i)
 		i += 1
 
 	print(i)
@@ -44,6 +44,40 @@ def buy_or_sell(smooth_threshold):
 	mng = plt.get_current_fig_manager()
 	mng.resize(*mng.window.maxsize())
 	plt.show()
-		
+
+def buy_or_sell():
+
+	d = {}
+	with open('batchprices.pickle', 'rb') as handle:
+		d = pickle.load(handle)
+
+	prices = {}
+	mx = 0
+	balance = 100000
+	holdings = {}
+
+	for tick, p_list in d.items():
+		if len(p_list) > mx:
+			mx = len(p_list)
+
+	for i in range(mx, 0, -1):
+		prices[i] = {}
+
+		for tick, p_list in d.items():
+			if len(p_list) > mx - i:
+				prices[i][tick] = p_list[-(mx-i)-1]
+
+	print(prices)
+	wym = []
+	for i in range(1, mx):
+		if "WYM" in prices[i]:
+			wym.append(prices[i]["WYM"])
+
+	for i in range(1, mx):
+		pass
+		#put day-by-day sim here
+		# use holdings and balance vars
+
+
 if __name__ == "__main__":
-	buy_or_sell(0.98)
+	buy_or_sell()

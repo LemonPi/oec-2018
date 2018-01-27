@@ -2,6 +2,7 @@ import pandas as pd
 import pickle
 import matplotlib.pyplot as plt
 import math
+import api
 
 
 class dfdt:
@@ -16,7 +17,36 @@ class dfdt:
         return (prices[index] - 2 * prices[index - 1] + prices[index - 2]) / (dx ** 2)
 
 
-def filter_smooth(smooth_threshold):
+def window_stats(historical_price, window, plot=False):
+    times = range(0, len(historical_price))
+    # data = pd.DataFrame(list(zip(times, historical_price)), columns=['Times', 'Price'])
+    # prices = data['Price']
+    prices = pd.Series(historical_price)
+    mavg = prices.rolling(center=False, window=window).mean()
+
+    normalized_mavg = (mavg - mavg.mean()) / mavg.std()
+
+    # first and second derivatives
+    derivative = normalized_mavg.diff()
+    second_deriv = derivative.diff()
+
+    if plot:
+        ax = prices.plot(label='Price')
+        mavg.plot(ax=ax, label='Moving avg')
+        derivative.plot(ax=ax, label='D')
+        plt.scatter(x=times, y=derivative, label='D')
+        second_deriv.plot(ax=ax, label='DD')
+
+        ones = pd.Series([0] * len(historical_price))
+        ones.plot(ax=ax)
+
+        plt.legend()
+        plt.show()
+
+    return derivative.iloc[-1], second_deriv.iloc[-1]
+
+    
+def filter_out_smooth_stocks(smooth_threshold):
 
 	d = {}
 	with open('batchprices.pickle', 'rb') as handle:
@@ -47,6 +77,7 @@ def filter_smooth(smooth_threshold):
 	mng.resize(*mng.window.maxsize())
 	plt.show()
 
+	
 def buy_or_sell():
 
 	d = {}
@@ -82,4 +113,5 @@ def buy_or_sell():
 
 
 if __name__ == "__main__":
-	buy_or_sell()
+    # buy_or_sell(0.98)
+    print(window_stats(api.get_prices('OPZ'), 3))

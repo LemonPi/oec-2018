@@ -17,3 +17,28 @@ Note this package requires python 3
 - mean reversion?
 - computing first and second derivatives?
 - machine learning?
+
+#### API
+for each timestep, trading algorithm
+===
+input:
+account {
+    number cash
+    [holding {
+        string ticker
+        number num_shares
+        number book_price
+        number market_price
+    }]
+}
+[stocks {
+    string ticker
+    number [historical price] or current price if past prices known
+}]
+===
+outputs:
+[action {
+    string type "buy" | "sell",
+    string ticker
+    number num_shares
+}]

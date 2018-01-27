@@ -17,6 +17,15 @@ def hello_world():
 def dashboard():
     return render_template("dashboard.html")
 
+@app.route("/trade")
+def trade():
+    starttime = time.time()
+    while True:
+        print("tic")
+        trade()
+        print("toc")
+        time.sleep(60.0 - ((time.time() - starttime) % 60.0))
+    return "Success"
 
 WINDOW = 2
 algo = DerivativeTradingAlgo(WINDOW, 0.05, 0.05)
@@ -73,10 +82,4 @@ def take_action(action):
 
 
 if __name__ == '__main__':
-    starttime = time.time()
-    while True:
-        print("tic")
-        trade()
-        print("toc")
-        time.sleep(60.0 - ((time.time() - starttime) % 60.0))
-    # app.run(host='localhost', port=5000)
+    app.run(host='localhost', port=5000)

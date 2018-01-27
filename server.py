@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 from algo import DerivativeTradingAlgo
 import api
+import time
 
 app = Flask(__name__)
 
@@ -72,5 +73,10 @@ def take_action(action):
 
 
 if __name__ == '__main__':
-    trade()
+    starttime = time.time()
+    while True:
+        print("tic")
+        trade()
+        print("toc")
+        time.sleep(60.0 - ((time.time() - starttime) % 60.0))
     # app.run(host='localhost', port=5000)

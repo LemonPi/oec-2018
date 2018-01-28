@@ -51,15 +51,15 @@ class DerivativeTradingAlgo(TradingAlgo):
                     # print(stock, dd, self.dd_threshold)
                     buy_stocks.append(stock)
                 elif ticker in own_stocks:
-                    print(dd)
+                    # print(dd)
                     if dd < -self.dd_threshold:
                         sell_stocks.append(stock)
 
         actions = []
-        print("own stock")
-        print(own_stocks)
-        print("sell stock")
-        print(sell_stocks)
+        # print("own stock")
+        # print(own_stocks)
+        # print("sell stock")
+        # print(sell_stocks)
         for stock in sell_stocks:
             ticker = stock['ticker']
             actions.append(Action('sell', ticker, own_stocks[ticker].shares))

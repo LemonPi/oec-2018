@@ -11,8 +11,10 @@ class Simulator:
     by assessing the algorithm's performance across historical data.
     """
 
-    def __init__(self, trading_algo):
+    def __init__(self, trading_algo, starting_time=1):
         self.trading_algo = trading_algo
+        self.HIST_WINDOW_SIZE = 100
+        self.starting_time = starting_time
 
     def simulate(self):
         d = {}
@@ -36,12 +38,12 @@ class Simulator:
 
         filtered_prices = filter_out_smooth_stocks(0.01)
 
-        for i in range(1, mx+1):
+        for i in range(self.starting_time, mx + 1):
             print("simulating hour {}".format(i))
             stocks = []
             for ticker in filtered_prices:
                 historical_price = []
-                for j in range(1, i):
+                for j in range(max(1, i - self.HIST_WINDOW_SIZE), i):
                     if ticker in prices[j]:
                         historical_price.append(prices[j][ticker])
 
@@ -94,5 +96,5 @@ class Simulator:
 
 
 if __name__ == "__main__":
-    sim = Simulator(DerivativeTradingAlgo(2, 0.05, 0.05))
+    sim = Simulator(DerivativeTradingAlgo(2, 0.02, 0.05), 200)
     sim.simulate()

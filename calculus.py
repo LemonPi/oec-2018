@@ -37,6 +37,19 @@ def window_stats(historical_price, window, plot=False):
     return derivative.iloc[-1], second_deriv.iloc[-1]
 
 
+def get_slope(x, y):
+    """Calculate slope of a x-y series
+    [number],[number] -> number"""
+    # use slope = r * sy / sx
+    # r = correlation coefficient
+    # sy,sx is the series' standard deviation
+    data = pd.DataFrame(list(zip(x, y)), columns=['x', 'y'])
+    data['y'] = (data['y'] - data['y'].mean()) / data['y'].std()
+    # normalize data
+    corr = data.corr()['x']['y']
+    return corr / data['x'].std()
+
+
 def filter_out_smooth_stocks(smooth_threshold, plot=False):
     d = {}
     with open('batchprices.pickle', 'rb') as handle:

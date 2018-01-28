@@ -1,6 +1,6 @@
 from data_structures import Account, Holding
 from calculus import filter_out_smooth_stocks
-from algo import DerivativeTradingAlgo
+from algo import DerivativeTradingAlgo, LinearRegressionAlgo
 from api import COST_PER_ACTION
 import pickle
 
@@ -96,5 +96,6 @@ class Simulator:
 
 
 if __name__ == "__main__":
-    sim = Simulator(DerivativeTradingAlgo(2, 0.02, 0.05), 200)
+    # sim = Simulator(DerivativeTradingAlgo(2, 0.02, 0.05), 200)
+    sim = Simulator(LinearRegressionAlgo(0.05), 200)
     sim.simulate()

@@ -97,5 +97,5 @@ class Simulator:
 
 if __name__ == "__main__":
     # sim = Simulator(DerivativeTradingAlgo(2, 0.02, 0.05), 200)
-    sim = Simulator(LinearRegressionAlgo(0.05), 200)
+    sim = Simulator(LinearRegressionAlgo(0.1, 10), 200)
     sim.simulate()

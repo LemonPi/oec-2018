@@ -36,7 +36,7 @@ class Simulator:
                 if len(price_list) > mx - i:
                     prices[i][tick] = price_list[-(mx - i) - 1]
 
-        filtered_prices = filter_out_smooth_stocks(0.01)
+        filtered_prices = filter_out_smooth_stocks(-1)
 
         for i in range(self.starting_time, mx + 1):
             print("simulating hour {}".format(i))

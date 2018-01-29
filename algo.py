@@ -119,7 +119,7 @@ class LinearRegressionAlgo(TradingAlgo):
             slope = get_slope(range(len(prices)), prices)
             if slope > self.slope_threshold:
                 buy_stocks.append(stock)
-            elif slope < self.slope_threshold and stock['ticker'] in own_stocks:
+            elif slope < -self.slope_threshold and stock['ticker'] in own_stocks:
                 sell_stocks.append(stock)
 
         actions = []
